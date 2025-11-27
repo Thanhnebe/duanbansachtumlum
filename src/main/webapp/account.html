@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+        <title>My Account</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link rel="stylesheet" href="css/styleforaccount.css">
+    </head>
+
+    <body>
+        <!--Thanh menu-->
+        <header class="navbar">
+            <div class="logo">
+                <a href="trangchu.html"><img src="images/living-word-christian-church.png.webp"></a></div>
+                <nav class="menu">
+                    <a href="#">Who we are</a>
+                    <a href="#">Location</a>
+                    <a href="#">Minitries</a>
+                    <a href="#">Music</a>
+                    <a href="#">Videos</a>
+                    <a href="#">Events</a>
+                    <a href="#">Contact</a>
+                    <a href="#" id="donate">GIVE</a>
+                    </nav>
+                    </header>
+
+                    <!--3 chuc nang tim kiem, gio hang, account-->
+                    <div class="iconsright">
+                    <a><img src="images/icons8_search_30px.png" alt="search" class="searchandaccount"></a>
+                    <a><button type="button" id="cart"><img src="images/icons8_shopping_cart_64px.png" alt="cart" ><pan>0 VND</pan></button></a>
+                    <a href="account.html"><img src="images/icons8_account_32px_1.png" alt="account" class="searchandaccount"></a>
+                    </div>
+            </div>
+
+            <!--Page hien tai-->
+    <div class="topage">
+        <img src="images/icons8_home_26px.png" alt="homepage" id="iconhome">
+        <span><a href="trangchu.html" id="homepage">Home ›</a></span>
+        <span id="myaccountpage">My account</span>
+    </div>
+        </div>
+
+        <!--Thông báo lỗi nếu trùng tài khoản-->
+         <div id="errorBox" class="error-box" style="display: none"></div>
+
+        <script>
+            const params = new URLSearchParams(window.location.search);
+            if(params.get('error')=== 'invalid')
+            {
+                document.getElementById('errorBox').textContent= 'Lỗi: Một tài khoản đã được đăng kí với email này. Hãy đăng nhập hoặc sử dụng email khác'
+                document.getElementById('errorBox').style.display='block';
+               
+            }
+            </script>
+        <div class="centertext">
+            <p id="content">My Account</p>
+        </div>
+        
+        <div class="accountlog">
+            
+            <!--FOrm dang nhap-->
+            <div class="loginform">
+                <form action="login" autocomplete="on" method = "post">
+            <p class="headbox">Login</p>
+            <p>Username or email address <span class="sao">*</span></p>
+            <input type="text" class="box" name="emaillogin" required>
+            <p>Password <span class="sao">*</span></p>
+            <input type="password" class="boxp" name="passwordlogin" required>
+            <br><br><input type="checkbox" id="checkbox" alt="Nhớ thông tin"><span id="remember"> Remember me</span>
+            <br><button id="buttonlogin" type="submit">Log in</button>
+            <br><br>
+            <a href="#" id="forgetpass">Lost your password?</a>
+            </form>
+            </div>
+            <!--form dang ky-->
+            <div class="registerform">
+                <form action="register" method="post" autocomplete="on">
+                   
+                <p class="headbox" id="register">Register</p>
+                <!--Điền email đăng kí-->
+                <p id="emailcontent" >Email address<span class=sao>*</span></p>
+                <input type="email" class="box" id="twondboxuser" name="emailregister" required>
+                <!--Mật khẩu đăng kí-->
+                <p id="passwordcontent" >Password <span class="sao">*</span></p>
+                <input type="password" class="boxp" id="twondpasswordbox" name="passwordregister" minlength="6" required>
+                <!--Kiểm tra độ mạnh của mật khẩu-->
+                <div id="domanhmatkhau">
+
+                </div>
+                <script src="js/account.js">
+
+                </script>
+                <p id="note">Your personal data will be used to support your experience throughout this website,<br> to manage access to your account, and for other purposes described in our<br><a href="#" id="policy">privacy policy.</a>
+</p>
+        <br><button type="submit" id="registerbutton">Register</button>
+        </form>
+
+        </div>
+         </div>
+         <!--Phan den san pham amazon-->
+            <a href="https://www.amazon.com/Enough-Learn-How-Be-Content-ebook/dp/B0DWJDBP8Y/" target="_blank">
+                <div class="linkto">
+                <img src="..\images\Enough-is-Enough-min-pbg9aalaeusgykbnbjb9oty3cwtj0f6ewdhepnjn40 copy.png">
+                </div>
+            </a>
+                    <p id="noteto">Enough is Enough Kindle</p>
+                    <p id="noteto2">Note: You will be redirected to AMAZON website</p>
+           
+    <!--Phan thong tin social-->
+    <div class="khung">
+        <div class="inforsection">
+        <h3>Follow US</h3>
+        <br>
+        <a href="https://www.instagram.com/livingwordts" id="instagram">@livingwordts</a>
+        <div class="socialmedia">
+        <a href="https://www.facebook.com/nguyen.thai.duong.693000"><img src="../images/icons8_facebook_old_26px.png"></a>
+        <a href="https://www.youtube.com"><img src="../images/icons8_youtube_16px.png"></a>
+        <a href="x.com"><img src="../images/icons8_twitter_30px.png"></a>
+        </div>
+        </div>
+        </div>
+        </body>
+        
+        <script>
+      //Độ mạnh mật khẩu
+
+        document.getElementById('twondpasswordbox').addEventListener('input', function() {
+            const twondpasswordbox = this.value;
+            const message = document.getElementById('domanhmatkhau');
+
+            if (twondpasswordbox.length === 0){
+                message.textContent = ''
+                message.style.display = 'none'
+                return;
+            }
+
+            if (twondpasswordbox.length < 6){
+                message.textContent = 'Mật khẩu tối thiểu 6 kí tự';
+                message.style.color = 'red';
+                message.style.display = 'block'
+                return;
+            }
+
+            const onceletter = /[a-zA-Z]/.test(twondpasswordbox);
+            const includenumber = /[0-9]/.test(twondpasswordbox);
+            const includespecial = /[^a-zA-z0-9]/.test(twondpasswordbox);
+
+            if (onceletter && !includenumber && !includespecial){
+                message.textcontent = 'Mật khẩu yếu'
+                message.style.color = 'red'
+            }
+
+            if (onceletter && includenumber && !includespecial){
+                message.textContent = 'Mật khẩu trung bình'
+                message.style.color = 'yellow'
+            }
+
+            if (onceletter && includenumber && includespecial){
+                message.textContent = 'Mật khẩu mạnh'
+                message.style.color = 'green'
+            }
+            message.style.display = 'block'
+
+        })
+        </script>
+
+        <footer class="site-footer">
+            <div class="footer">
+            <div class="left">
+                Copyright &copy 2025 Living Word
+            </div>
+            <div class="right">
+                <a href=#>Policy Private</a>
+            </div>
+            </div>
+        </footer>
+</html>

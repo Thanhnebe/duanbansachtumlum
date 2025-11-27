@@ -1,0 +1,271 @@
+project:
+  name: LivingWord
+  techStack:
+    - java-servlet
+    - jsp
+    - html-css-js
+    - sqlserver
+  mainFolders:
+    javaSource: src/main/java/com/shop
+    webApp: src/main/webapp
+    sql: create_cart_table.sql
+    libs: libraries
+  generalPrinciples:
+    - "Code phải rõ ràng, dễ đọc, tự giải thích, không dựa vào comment."
+    - "Ưu tiên tái sử dụng code (DAO, model, util) thay vì viết mới trùng chức năng."
+    - "Tôn trọng cấu trúc hiện có, phát triển theo hướng mở rộng."
+
+codeStyle:
+  java:
+    packages:
+      basePackage: com.shop
+      subPackages:
+        - dao
+        - db
+        - filter
+        - model
+        - servlet
+        - util
+        - test
+      rules:
+        - "Mỗi lớp thuộc đúng package chức năng (DAO ở com.shop.dao, Servlet ở com.shop.servlet, v.v.)."
+        - "Không tạo package mới nếu chức năng phù hợp với package sẵn có."
+    naming:
+      classes:
+        style: PascalCase
+        examples:
+          - Products
+          - CartDAO
+          - ProductListServlet
+          - DBUtil
+        rules:
+          - "Lớp entity/model: danh từ số ít, mô tả đối tượng domain (Products, Cart)."
+          - "Lớp DAO: tên entity + DAO (ProductDAO, CartDAO)."
+          - "Lớp Servlet: tên chức năng + Servlet (LoginServlet, ProductListServlet)."
+          - "Lớp util/helper: hậu tố Util (PasswordUtil, DBUtil)."
+      interfaces:
+        style: PascalCase
+        rules:
+          - "Tên mô tả khả năng/chức năng, không thêm tiền tố I."
+      methods:
+        style: camelCase
+        examples:
+          - getAllProducts
+          - insertProduct
+          - getConnection
+        rules:
+          - "Tên là động từ/cụm động từ mô tả đúng hành động."
+          - "Không viết tắt khó hiểu; có thể dùng từ quen thuộc như DAO, DB."
+      variables:
+        style: camelCase
+        rules:
+          - "Tên biến rõ nghĩa, ngắn gọn nhưng không mơ hồ (productId, imageUrl, cart)."
+          - "Biến tạm trong vòng lặp có thể dùng i, j nếu đơn giản."
+      constants:
+        style: UPPER_SNAKE_CASE
+        rules:
+          - "Dùng static final cho hằng số (SQL, config nếu chưa tách)."
+    formatting:
+      indentation: 4
+      braces:
+        style: "K&R (mở cùng dòng với khai báo)."
+      maxLineLength: 120
+      spacing:
+        - "Có khoảng trắng sau dấu phẩy, quanh toán tử so sánh và toán tử số học."
+        - "Không để khoảng trắng dư thừa cuối dòng."
+      imports:
+        - "Xoá imports không dùng."
+        - "Dùng import tường minh, tránh wildcard trừ khi thực sự cần."
+    errorHandling:
+      rules:
+        - "Không nuốt exception im lặng; tối thiểu phải log hoặc in stack trace, nhưng ưu tiên logging chuẩn nếu được thêm."
+        - "Không để logic nghiệp vụ ẩn trong catch nếu không thật sự cần."
+        - "Khi có thể, ném lại exception ở tầng phù hợp, không che giấu lỗi nghiêm trọng."
+    database:
+      rules:
+        - "Mọi truy vấn DB phải đi qua lớp trong package com.shop.dao hoặc com.shop.db."
+        - "Không viết truy vấn SQL trực tiếp trong Servlet."
+        - "Ưu tiên PreparedStatement, không build query bằng nối chuỗi với input người dùng."
+    servlet:
+      rules:
+        - "Servlet chịu trách nhiệm nhận request, gọi DAO/service, chuẩn bị dữ liệu cho view hoặc trả JSON."
+        - "Không nhồi quá nhiều logic nghiệp vụ phức tạp trong Servlet; nếu phức tạp, tách sang lớp service/tiện ích."
+        - "Đặt mapping rõ ràng qua @WebServlet hoặc web.xml; tránh trùng lặp đường dẫn."
+    model:
+      rules:
+        - "Model là POJO với private field và public getter/setter."
+        - "Không đặt logic DB hoặc logic trình bày trong lớp model."
+  web:
+    htmlJsp:
+      structure:
+        - "File giao diện đặt trong src/main/webapp, chia theo khu vực (admin, css, images, v.v.)."
+        - "JSP dùng cho trang động, HTML dùng cho trang tĩnh đơn giản."
+      naming:
+        rules:
+          - "File JSP/HTML đặt tên theo chức năng, chữ thường, có thể dùng dấu gạch ngang (admin-products.jsp, trangchu.jsp)."
+          - "Tránh tên mơ hồ như fileHTML.html; nếu chỉnh sửa, xem xét đổi tên rõ nghĩa hơn."
+      style:
+        - "Dùng indent 2 spaces hoặc 4 spaces nhất quán trong từng file."
+        - "Thuộc tính HTML dùng chữ thường, dấu ngoặc kép kép cho giá trị."
+    css:
+      organization:
+        - "CSS chung cho trang chủ: css/styles.css."
+        - "CSS riêng cho admin: admin/styleforadmin.css."
+        - "CSS cho từng khu vực con: tổ chức theo thư mục (css/my-account, v.v.)."
+      naming:
+        rules:
+          - "Class selector dùng kebab-case (product-item, theme_toggle được giữ nguyên theo code cũ, nhưng ưu tiên kebab-case cho class mới)."
+          - "ID dùng camelCase hoặc kebab-case nhưng nhất quán trong file."
+        bestPractices:
+          - "Không trùng ID trong cùng một trang."
+          - "Hạn chế override style bằng !important; ưu tiên cấu trúc selector hợp lý."
+    javascript:
+      placement:
+        - "Script nhỏ có thể đặt inline cuối trang, nhưng logic phức tạp nên tách vào file .js riêng trong thư mục phù hợp (vd: admin/toggle.js)."
+      naming:
+        - "Biến và hàm JS dùng camelCase (addToCart, updateCartDisplay)."
+        - "Tên hàm mô tả tác vụ rõ ràng (loadProducts, toggleMenu)."
+      fetchAndAjax:
+        - "Dùng fetch API hoặc XMLHttpRequest; body encode đúng Content-Type."
+        - "Xử lý lỗi .catch, không bỏ qua promise rejection."
+      dom:
+        - "Chỉ query selector cần thiết; tránh query lặp trong vòng lặp lớn."
+        - "Kiểm tra null trước khi thao tác DOM trên phần tử có thể không tồn tại."
+
+codeReview:
+  generalProcess:
+    - "Mọi thay đổi phải được review trước khi merge (trừ các fix cực nhỏ, nhưng vẫn khuyến khích review)."
+    - "Review tập trung vào tính đúng đắn nghiệp vụ, bảo mật, hiệu năng cơ bản và tính nhất quán với code hiện có."
+    - "PR phải đủ nhỏ để review dễ dàng; nếu quá lớn, hãy tách thành nhiều PR logic rõ ràng."
+  reviewerChecklist:
+    correctness:
+      - "Logic có đúng với yêu cầu nghiệp vụ không (cart, products, login, v.v.)?"
+      - "Đã xử lý các trường hợp null/empty (session email, productId) chưa?"
+      - "Đầu vào đã được validate ở mức phù hợp chưa?"
+    security:
+      - "Không có SQL injection (luôn dùng PreparedStatement với parameter)."
+      - "Không log hoặc commit mật khẩu, token, thông tin nhạy cảm."
+      - "Không lộ thông tin cấu hình nhạy cảm mới (credentials, secret key) vào code; nếu có, yêu cầu chuyển vào config."
+    styleAndStructure:
+      - "Tuân thủ quy tắc đặt tên, package, và phân tầng (Servlet/DAO/model/DBUtil)."
+      - "Không thêm comment thừa; thông tin nên thể hiện qua tên lớp/hàm/biến và cấu trúc code."
+      - "Không refactor lớn vượt quá phạm vi PR nếu không cần; nếu cần, tách PR riêng cho refactor."
+    performance:
+      - "Không query trong vòng lặp nếu có thể gom lại."
+      - "Không load nhiều dữ liệu hơn cần thiết từ DB."
+    testsAndManualCheck:
+      - "Đã test thủ công các luồng chính liên quan (thêm sản phẩm, add to cart, login/logout) chưa?"
+      - "Nếu thay đổi API JSON, đã kiểm tra phần frontend JS tương ứng chưa?"
+  reviewComments:
+    rules:
+      - "Nhận xét cụ thể, gợi ý giải pháp, tránh nhận xét chung chung kiểu 'xấu', 'sai'."
+      - "Nếu yêu cầu thay đổi lớn, đề nghị tác giả tách thành PR riêng."
+      - "Khi approve, hãy ghi rõ đã kiểm tra những phần nào (logic, UI, DB, v.v.)."
+
+gitCommit:
+  generalRules:
+    - "Commit nhỏ, mô tả một mục đích rõ ràng."
+    - "Không commit file build, thư viện third-party (trừ khi được chấp nhận), hoặc credential."
+    - "Không để commit message vô nghĩa như 'fix', 'update', 'test'."
+  format:
+    style: "type(scope): description"
+    types:
+      - feat
+      - fix
+      - refactor
+      - style
+      - chore
+      - docs
+    examples:
+      - "feat(cart): add session cart sync with database"
+      - "fix(products): handle invalid productId when adding to cart"
+      - "refactor(db): extract common connection logic to DBUtil"
+      - "docs(readme): add instructions for running project"
+  descriptionGuidelines:
+    - "Dòng đầu tiên <= 72 ký tự, viết ở thì hiện tại (add, update, fix...)."
+    - "Nếu cần thêm chi tiết, thêm đoạn mô tả ngắn bên dưới, cách một dòng trống."
+    - "Nhắc rõ khu vực bị ảnh hưởng: servlet, dao, jsp, css nếu liên quan."
+
+aiRules:
+  general:
+    - "Luôn đọc và hiểu code hiện có (DAO, Servlet, model, JSP/CSS/JS liên quan) trước khi sinh code mới hoặc chỉnh sửa."
+    - "Ưu tiên tái sử dụng pattern sẵn có (CartDAO, ProductDAO, ProductListServlet, CartServlet...) thay vì tự nghĩ kiến trúc mới."
+    - "Không thêm comment trong code; giải thích logic qua tên hàm/biến rõ ràng và cấu trúc hàm."
+    - "Không tự ý thay đổi cấu trúc thư mục lớn; tuân thủ phân tầng hiện tại."
+    - "Không lan truyền thêm thông tin nhạy cảm (như credentials) sang file mới; khi cần, đề xuất tách ra cấu hình an toàn."
+  newFiles:
+    whenToCreate:
+      - "Chỉ tạo file mới khi chức năng mới không thể gắn hợp lý vào lớp hiện có mà không làm lớp đó cồng kềnh."
+      - "Chức năng chung được dùng bởi nhiều nơi nên tách vào util/service riêng."
+    placement:
+      java:
+        - "Lớp DAO mới đặt trong com.shop.dao."
+        - "Lớp model/entity mới đặt trong com.shop.model."
+        - "Servlet mới đặt trong com.shop.servlet và gắn mapping rõ ràng."
+        - "Lớp tiện ích chung đặt trong com.shop.util."
+      web:
+        - "JSP/HTML mới cho trang người dùng đặt trực tiếp trong src/main/webapp hoặc thư mục con phù hợp."
+        - "Trang admin mới đặt trong src/main/webapp/admin."
+        - "CSS mới đặt trong src/main/webapp/css hoặc thư mục con; đặt tên phản ánh khu vực sử dụng."
+        - "JS mới đặt gần với phần giao diện sử dụng (vd: admin/toggle.js)."
+    naming:
+      - "Tên file và lớp tuân theo quy tắc đặt tên đã nêu; không tự đặt convention mới."
+      - "API endpoint mới phải đồng bộ với pattern hiện có (/cart, /products...)."
+    implementationStyle:
+      - "Viết code Java theo phong cách các lớp hiện tại: dùng try-with-resources cho DB, PreparedStatement, POJO model."
+      - "Trong JSP/HTML, cân nhắc tính responsive cơ bản và tương thích với CSS hiện có."
+      - "Trong JS, dùng fetch như các đoạn đã có, xử lý JSON và lỗi tương tự."
+  existingFiles:
+    readingFirst:
+      - "Trước khi sửa, đọc toàn bộ file để hiểu style, pattern, và vai trò trong hệ thống."
+      - "Nếu file có liên kết chặt với file khác (Servlet–DAO–model–JSP/JS), đọc sơ qua những file liên quan."
+    minimalChanges:
+      - "Chỉ thay đổi phần cần thiết để giải quyết yêu cầu; không refactor rộng khi không được yêu cầu."
+      - "Giữ nguyên coding style, indentation, và naming trong file đó."
+      - "Nếu cần refactor lớn, đề xuất tách thành thay đổi riêng có mô tả rõ."
+    compatibility:
+      - "Không phá endpoint public hiện có (URL, JSON schema) trừ khi có yêu cầu cụ thể, và khi đó phải cập nhật tất cả nơi dùng."
+      - "Khi thay đổi DAO hoặc DBUtil, đảm bảo các lớp sử dụng vẫn hoạt động đúng (build JSON, cart, v.v.)."
+    handlingComments:
+      - "Không thêm comment mới vào file cũ."
+      - "Nếu gặp comment cũ, không xoá trừ khi chuyển thông tin đó vào tên hàm/biến rõ ràng hơn; sau đó có thể xoá comment để tránh trùng lặp."
+  noCommentsPolicy:
+    java:
+      - "Không dùng // comment hoặc /* ... */ cho mô tả logic thông thường."
+      - "Không dùng Javadoc trừ trường hợp bắt buộc bởi tool, nhưng mặc định tránh dùng."
+    web:
+      - "Không dùng <!-- ... --> để chú thích layout, trừ phần rất đặc biệt, khó hiểu; ưu tiên đặt tên class/id rõ ràng."
+    javascript:
+      - "Không dùng // hoặc /* ... */ cho logic; code phải tự giải thích qua tên hàm/biến."
+    documentationInstead:
+      - "Mọi giải thích dài dòng nên được đưa vào tài liệu (README, docs) thay vì comment trong code."
+
+documentation:
+  strategy:
+    - "Ưu tiên tài liệu ngoài code (Markdown) thay vì comment trong code."
+    - "Tài liệu cần ngắn gọn, thực dụng, tập trung vào cách chạy, cấu trúc, và các luồng nghiệp vụ chính."
+  locations:
+    - "README.md ở thư mục gốc: mô tả cách chạy dự án, cấu trúc thư mục, yêu cầu môi trường (JDK, Tomcat, SQL Server)."
+    - "docs/ (nếu cần): mô tả chi tiết các module lớn (cart, products, account, admin)."
+  contents:
+    highLevel:
+      - "Mô tả kiến trúc: Java Servlet + JSP + SQL Server, phân tầng DAO/model/servlet."
+      - "Sơ đồ hoặc mô tả luồng: ví dụ luồng thêm sản phẩm vào giỏ, login/logout."
+    api:
+      - "Liệt kê endpoint chính (vd: /products trả JSON, /cart nhận POST action=add...)."
+      - "Mô tả format JSON trả về (fields, kiểu dữ liệu)."
+    database:
+      - "Tài liệu bảng chính (products, cart, users nếu có), cột chính, quan hệ cơ bản."
+      - "Không ghi mật khẩu hoặc thông tin nhạy cảm trong tài liệu."
+  generationRulesForAI:
+    - "Khi sinh tài liệu mới, dựa vào code thực tế (DAO, Servlet, JSP) để đảm bảo nội dung đúng."
+    - "Không copy nguyên code vào tài liệu; chỉ trích dẫn các đoạn cần thiết để minh hoạ."
+    - "Viết tài liệu ngắn gọn, có ví dụ thực tế (vd URL cụ thể, payload mẫu)."
+    - "Nếu có thay đổi lớn (endpoint mới, bảng mới), cập nhật tài liệu tương ứng."
+
+learningFromExistingCode:
+  principles:
+    - "Luôn xem ProductDAO, CartDAO, Products, CartServlet, ProductListServlet như mẫu tham chiếu cho các tính năng tương tự."
+    - "Trước khi thiết kế giải pháp mới, tìm xem có lớp hoặc pattern tương tự trong code hiện hữu để học và tái sử dụng."
+    - "Tôn trọng các quyết định thiết kế đã có (cách trả JSON, dùng session cart, pattern DAO) trừ khi có yêu cầu cải tiến cụ thể."
+    - "Khi cần mở rộng, ưu tiên mở rộng theo hướng tương thích với code hiện tại, tránh phá vỡ kiến trúc đang dùng."
